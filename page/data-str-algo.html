@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Extended About</title>
+  </head>
+  
+  <body>
+      <div class="margin">
+      <h2>Data Structures and Algorithms</h2>
+      
+      <h3>Algorithms, Data Structures, Sorting & Searching Algorithms</h3>
+      
+      <p><b>Objective:</b> <i>Algorithmic Thinking</i></p>
+      <p>After completing this learning content, you should be able to analyze a problem, break it down into logical steps, and determine the most suitable algorithm or data structure for solving it efficiently.</p>
+      
+      <h3>What is an Algorithm?</h3>
+      <p>An algorithm is a well-defined set of steps or instructions for solving a specific task or problem.</p>
+      
+      <h3>Linear Search</h3>
+      <p>Linear search is a simple searching algorithm where we start at the beginning of a list and check each element sequentially until the target value is found or the list ends.</p>
+      
+      <h3>Steps:</h3>
+      <ol>
+        <li>Start at the beginning of the list.</li>
+        <li>Compare the current element with the target.</li>
+        <li>If they match, return the index or confirm the target is found.</li>
+        <li>If not, move sequentially to the next element.</li>
+        <li>If the end of the list is reached without a match, return "not found".</li>
+      </ol>
+      
+      <h3>Rules of an Algorithm</h3>
+      <ul>
+        <li>An algorithm should always complete execution and not run indefinitely.</li>
+        <li>It must have a clearly defined problem statement, input, and expected output.</li>
+        <li>The input consists of a series of values, sometimes sorted for efficiency.</li>
+        <li>The output should correctly identify and return the desired value(s).</li>
+        <li>The steps in an algorithm must be arranged in a specific and logical order.</li>
+        <li>Each step should be distinct and unambiguous.</li>
+        <li>It should produce a valid result within a finite amount of time.</li>
+      </ul>
+      
+      <h3>Efficiency in Algorithms</h3>
+      <p>Efficiency determines how effectively an algorithm performs, impacting speed and resource utilization.</p>
+      <p><b>Example:</b> Efficient DNA sequencing algorithms help researchers analyze genetic data faster, leading to better disease understanding and medical advancements.</p>
+      
+      <h3>Two Measures of Efficiency</h3>
+      <h4><i>Time Complexity & Space Complexity</i></h4>
+      
+      <p><b>Time Complexity:</b> Measures the amount of time an algorithm takes to run as the input size increases. Faster algorithms are preferable in real-world applications.</p>
+      <p><b>Space Complexity:</b> Represents the amount of memory used by the algorithm. An algorithm must balance time efficiency with memory usage to be practical.</p>
+      <p>Example: A fast algorithm that requires excessive memory might not be feasible if system resources are limited.</p>
+
+      <h3>Linear Search</h3>
+      <p>Linear search is a simple searching algorithm where we start at the beginning of a list and check each element sequentially until the target value is found or the list ends.</p>
+      <pre><code>bool linearSearch(int arr[], int size, int target) {
+    for (int i = 0; i < size; i++) {
+        if (arr[i] == target) {
+            return true;
+        }
+    }
+    return false;
+}</code></pre>
+      
+      <h3>Binary Search</h3>
+      <p>Binary search is an efficient searching algorithm that requires a sorted array. It repeatedly divides the search interval in half to find the target value.</p>
+      <pre><code>bool binarySearch(int arr[], int left, int right, int target) {
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (arr[mid] == target)
+            return true;
+        else if (arr[mid] < target)
+            left = mid + 1;
+        else
+            right = mid - 1;
+    }
+    return false;
+}</code></pre>
+      
+      <h3>Searching an Array of Objects</h3>
+      <p>Searching within an array of objects requires comparing an attribute of each object.</p>
+      <pre><code>struct Student {
+    string name;
+    int id;
+};
+
+bool searchStudent(Student students[], int size, int targetId) {
+    for (int i = 0; i < size; i++) {
+        if (students[i].id == targetId) {
+            return true;
+        }
+    }
+    return false;
+}</code></pre>
+      
+      <h3>Bubble Sort</h3>
+      <p>Bubble sort repeatedly swaps adjacent elements if they are in the wrong order.</p>
+      <pre><code>void bubbleSort(int arr[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        for (int j = 0; j < size - i - 1; j++) {
+            if (arr[j] > arr[j + 1]) {
+                swap(arr[j], arr[j + 1]);
+            }
+        }
+    }
+}</code></pre>
+      
+      <h3>Selection Sort</h3>
+      <p>Selection sort selects the smallest element and swaps it into the correct position.</p>
+      <pre><code>void selectionSort(int arr[], int size) {
+    for (int i = 0; i < size - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < size; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        swap(arr[i], arr[minIndex]);
+    }
+}</code></pre>
+      
+      <h3>Sorting an Array of Objects</h3>
+      <p>Sorting objects requires defining a custom comparison function.</p>
+      <pre><code>bool compareStudents(const Student &a, const Student &b) {
+    return a.id < b.id;
+}
+
+sort(students, students + size, compareStudents);</code></pre>
+      
+      <h3>Sorting and Searching Vectors</h3>
+      <p>Vectors can be sorted and searched using built-in C++ functions.</p>
+      <pre><code>vector<int> numbers = {5, 3, 8, 4};
+sort(numbers.begin(), numbers.end());
+
+if (binary_search(numbers.begin(), numbers.end(), 4)) {
+    cout << "Found 4!";
+}</code></pre>
+</div>
+  </body>
+</html>
