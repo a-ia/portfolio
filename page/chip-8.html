@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="">
+  <head>
+    <meta charset="utf-8">
+    <title>Extended About</title>
+  </head>
+  
+  <body>
+
+  </body>
+<div class="margin">
+    <h2>Building a CHIP-8 Emulator in Godot</h2>
+
+    <p>A few weeks ago I embarked on an idea that had been sitting in my head for some time: my first emulation project - a <b>CHIP-8 emulator</b>. I'm a fresh game dev hobbyist who just started using Godot for game projects when I realized this idea would make for a great fit for Godot, and it proved to be an amazing and manageable learning experience.</p>
+    <br>
+    <h3>What is CHIP-8?</h3>
+    <p>CHIP-8 is a wicked cool <b>virtual machine</b> from the 1970s that was designed to make game programming easier on 8-bit microcomputers. It's quite literally the "Hello World" of emulation development.</p>
+
+    <h4>CHIP-8 is beloved in the emulation community for its simplicity. It has:</h4>
+    <ul>
+        <li>A mere 35 instructions (compared to thousands in modern processors)</li>
+        <li>4KB of memory</li>
+        <li>64×32 monochrome display</li>
+        <li>16 general-purpose registers</li>
+        <li>16-key hexadecimal keypad</li>
+    </ul>
+
+    <h4>The emulator will consist of these key components core Components</h4>
+    <ul>
+        <li>CPU (instruction execution and memory management)</li>
+        <li>Output: Display (64x32 pixel output)</li>
+        <li>Input: Input handling (16-key hexadecimal keypad)</li>
+        <li>Audio (simple beep sound)</li>
+        <li>ROM selection and loading</li>
+    </ul>
+
+    <h4>Memory and CPU Initialization</h4>
+    <p>CHIP-8 has 4KB (4096 bytes) of memory, and programs are loaded starting at address 0x200:</p>
+    <pre><code># Memory and register initialization
+var memory: Array = []
+var V: Array = []  # CPU registers (V0-VF)
+var I: int = 0     # Index register
+var pc: int = 0x200  # Program counter
+
+func _init():
+    memory.resize(4096)
+    memory.fill(0)
+    V.resize(16)
+    V.fill(0)</code></pre>
+
+    <h4>Font Set Implementation</h4>
+    <p>CHIP-8 includes a built-in font set for hexadecimal digits 0-F. Each character is represented by a 5-byte sprite:</p>
+    <pre><code>const FONT_SET = [
+    0xF0, 0x90, 0x90, 0x90, 0xF0,  # 0
+    0x20, 0x60, 0x20, 0x20, 0x70,  # 1
+    # ... rest of the digits ...
+]
+
+# Load font set into memory at 0x50
+for i in range(FONT_SET.size()):
+    memory[0x50 + i] = FONT_SET[i]</code></pre>
+
+    <h4>Display System</h4>
+    <p>The display is a simple 64x32 monochrome screen where each pixel is either on or off. In Godot, we implement this using a Node2D:</p>
+    <pre><code>const SCALE = 20  # Size of each pixel
+const PIXEL_COLOR = Color(1, 1, 1)  # White
+const BG_COLOR = Color(0, 0, 0)     # Black
+
+func _draw():
+    # Draw background
+    draw_rect(Rect2(0, 0, 64 * SCALE, 32 * SCALE), BG_COLOR)
+    
+    # Draw active pixels
+    for y in range(32):
+        for x in range(64):
+            if cpu.display[y][x]:
+                draw_rect(
+                    Rect2(x * SCALE, y * SCALE, SCALE, SCALE),
+                    PIXEL_COLOR
+                )</code></pre>
+
+    <h3>Instruction Execution</h3>
+    <p>The heart of the emulator is the instruction execution cycle. CHIP-8 has less than 50 opcodes, so it's fairly manageable and doesn't take too long to work on. An Opcode is essentially an instruction that we need to execute. Each opcode is 2 bytes long.<br> Each cycle:</p>
+    <ul>
+        <li>Fetches a 2-byte opcode from memory</li>
+        <li>Decodes the opcode to determine the instruction</li>
+        <li>Executes the instruction</li>
+        <li>Updates system state</li>
+    </ul>
+
+    <pre><code>func execute_cycle():
+    # Fetch opcode (two bytes)
+    var opcode = (memory[pc] << 8) | memory[pc + 1]
+    pc += 2  # Move to next instruction
+
+    # Decode opcode components
+    var x = (opcode & 0x0F00) >> 8 
+    var y = (opcode & 0x00F0) >> 4
+    var n = opcode & 0x000F
+    var nn = opcode & 0x00FF
+    var nnn = opcode & 0x0FFF</code></pre>
+    <p>
+      The opcode is then broken into the components:<br>
+      x: The second nibble (register Vx)<br>
+      y: The third nibble (register Vy)<br>
+      n: The last nibble (4-bit value)<br>
+      nn: The last byte (8-bit value)<br>
+      nnn: The last three nibbles (12-bit address)
+    </p>
+
+    <h4>Understanding Hexadecimal</h4>
+    <p>
+        You might be wondering why we keep seeing numbers with "0x" in front of them in the code. That's hexadecimal notation! While we humans like base-10 numbers (0-9), computers work in binary (base-2, just 0s and 1s). Hexadecimal (base-16) is a convenient middle ground that makes binary numbers more readable for humans.
+        In hex, we use:
+        <br>
+        Numbers 0-9 as normal
+        Letters A-F for values 10-15
+        Each hex digit represents 4 binary digits
+        <br>
+        So when you see 0xF000, that's:
+        <br>
+        F = 1111 in binary
+        000 = 000000000000
+        Making it: 1111000000000000 in binary
+    </p>
+
+    <h4>Opcode Implementations</h4>
+    <p>Let's take a look at some key opcode implementations:</p>
+
+    <h5>1. Clear Screen (00E0)</h5>
+    <pre><code>0x0000:
+    match opcode & 0x00FF:
+        0x00E0:  # CLS (Clear the screen)
+            for row in display:
+                row.fill(false)
+            emit_signal("display_updated")</code></pre>
+    <p>This opcode simply fills the display array with false values, effectively clearing the screen. We then emit a signal to update the display.</p>
+
+    <h5>2. Return from Subroutine (00EE)</h5>
+    <pre><code>0x00EE:  # RET (Return from subroutine)
+    pc = stack[sp - 1]
+    sp -= 1</code></pre>
+    <p>This pops the last address from the stack and sets the program counter to it, effectively returning from a subroutine.</p>
+
+    <h5>3. Jump (1nnn)</h5>
+    <pre><code>0x1000:  # JP addr (Jump to address)
+    pc = nnn</code></pre>
+    <p>Simple, but important, sets the program counter to the specified address.</p>
+
+    <h5>4. Draw Sprite (Dxyn)</h5>
+    <pre><code>0xD000:  # DRW Vx, Vy, n (Draw sprite)
+    V[0xF] = 0  # Reset collision flag
+    for yline in range(n):
+        var pixel = memory[I + yline]
+        for xline in range(8):
+            if (pixel & (0x80 >> xline)) != 0:
+                var xcoord = (V[x] + xline) % 64
+                var ycoord = (V[y] + yline) % 32
+                if display[ycoord][xcoord]:
+                    V[0xF] = 1  # Collision detected
+                display[ycoord][xcoord] = !display[ycoord][xcoord]</code></pre>
+    <p>This is one of the most complex opcodes. It first resets the VF Register. Then for each row of the sprite (n rows tall), it gets the pixel data from memory and for each bit in the byte (8 pixels wide), if the bit is 1, XOR it with the existing pixel. If this causes any pixel to be erased, set VF to 1.</p>
+
+    <h4>Register Operations and Keyboard Mapping</h4>
+    <p>The CHIP-8 has 16 8bit registers. They are used to store values for operations. VX, VY, VF. VF register is used for the flags, and should not be used in programs. We map these keys to modern keyboard layouts:</p>
+    <pre><code># CHIP-8 keypad layout: Keyboard mapping:
+# 1 2 3 C             1 2 3 4
+# 4 5 6 D             Q W E R
+# 7 8 9 E             A S D F
+# A 0 B F             Z X C V
+const KEYMAP = {
+    KEY_1: 0x1, KEY_2: 0x2, KEY_3: 0x3, KEY_4: 0xC,
+    KEY_Q: 0x4, KEY_W: 0x5, KEY_E: 0x6, KEY_R: 0xD,
+    KEY_A: 0x7, KEY_S: 0x8, KEY_D: 0x9, KEY_F: 0xE,
+    KEY_Z: 0xA, KEY_X: 0x0, KEY_C: 0xB, KEY_V: 0xF
+}</code></pre>
+
+    <h4>Main Loop and Timing</h4>
+    <p>The emulation loop runs at a regulated speed to ensure smooth timing, typically running between 500 and 700 instructions per second to avoid being too fast or too slow. Think of this like FPS in a video game.</p>
+    <pre><code>const INSTRUCTIONS_PER_SECOND = 500
+var instruction_timer = 0.0
+const INSTRUCTION_INTERVAL = 1.0 / INSTRUCTIONS_PER_SECOND
+
+func _process(delta):
+    if emulation_running:
+        cpu.update_timers()
+        instruction_timer += delta
+        while instruction_timer >= INSTRUCTION_INTERVAL:
+            cpu.execute_cycle()
+            instruction_timer -= INSTRUCTION_INTERVAL</code></pre>
+    <p>The emulator is configured to run 500 instructions per second (INSTRUCTIONS_PER_SECOND = 500). INSTRUCTION_INTERVAL = 1.0 / 500 essentially sets this at 0.002 seconds per instruction. The main processing loop runs every frame. delta represents the time (in seconds) since the last frame. Godot calls this function once per frame.</p>
+
+    <h4>Audio Implementation</h4>
+    <p>My CHIP-8's audio is simple - it's a single-tone buzzer that can be on or off. I implement this using Godot's AudioStreamPlayer. We have the basic timer system that controls when sound should play:</p>
+    <pre><code>func update_timers():
+    if delay_timer > 0:
+        delay_timer -= 1
+    if sound_timer > 0:
+        sound_timer -= 1</code></pre>
+    
+    <p>And that's it! Feel free to check out the code on GitHub, and don't forget to try running some classic CHIP-8 games. You might be surprised at how amusing small and simple games can be.</p>
+</div>
+</html>
