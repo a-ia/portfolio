@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Learning Main Page</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+    <div class="grid">
+        <!-- First Row -->
+        <div class="header-row">
+            <div class="terminal-title">
+                <h1><span onclick="refreshPath()">&gt; $ echo Hello World!</span><span class="cursor"></span></h1>
+                <div class="nav-buttons">
+                    <a href="../index.html" class="back-button">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M15 18l-6-6 6-6"/>
+                    </svg> Back
+                    </a>
+                    <div class="buttons-container">
+                        <button class="socials-button">
+                        Follow
+                        <svg class="chevron" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                        <div class="social-dropdown">
+                            <a href="mailto:sasanevangeline@gmail.com">
+                                <img src="/path/to/email-icon.png" class="social-icon"> Email
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/github-icon.png" class="social-icon"> GitHub
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/linkedin-icon.png" class="social-icon"> LinkedIn
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/bluesky-icon.png" class="social-icon"> Bluesky
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/itchio-icon.png" class="social-icon"> Itch.io
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/steam-icon.png" class="social-icon"> Steam
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/codeforces-icon.png" class="social-icon"> CodeForces
+                            </a>
+                            <a href="#">
+                                <img src="/path/to/librefm-icon.png" class="social-icon"> Libre.fm
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- second Row -->
+
+        <div class="navigation">
+            <hr>
+            <h2>Navigation</h2>
+
+            <nav>
+                <ul>
+                    <li class="menu-item">
+                        <a href="#" onclick="toggleMenu(event)">Projects</a>
+                        <ul class="submenu">
+                            <li><a href="#CHIP-8" onclick="loadContent('Chip-8 Emulator')">CHIP-8 Emulator on Godot</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" onclick="toggleMenu(event)">Personal</a>
+                        <ul class="submenu">
+                            <li><a href="#extended-about" onclick="loadContent('Extended About')">Extended About</a></li>
+                        </ul>
+                    </li>
+                    <li class="menu-item">
+                        <a href="#" onclick="toggleMenu(event)">Dev</a>
+                        <ul class="submenu">
+                            <li><a href="#" onclick="loadContent('Dev Blog')">Dev Blog</a></li>
+                            <li class="menu-item">
+                                <a2>Learning</a2>
+                                <ul class="submenu">
+                                    <li><a href="#data-str-algo" onclick="loadContent('Data Structs and Algos')">Data Str &amp; Algos</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+
+        <div id="content" class="border-md">
+            <!-- second column of the second row -->
+            <textarea disabled id="ascii-art" class="w-100 aa" wrap="off" rows="25">
+      </textarea>
+
+        </div>
+
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
