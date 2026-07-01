@@ -155,7 +155,7 @@ function loadContent(contentKey) {
        })
         .catch(error => {
             console.error(error);
-            contentDiv.innerHTML = "<div class=\"margin\"><h2>Error</h2><p>Could not load the content. Please try again later.</p></div>";
+            contentDiv.innerHTML = "<div class=\"margin\"><h1>Error</h1><p>Could not load the content. Please try again later.</p></div>";
              borderNavigationDiv();
        });
 
@@ -235,4 +235,3 @@ function refreshPath() {
                 dropdown.classList.remove('show');
             }
         });
-
