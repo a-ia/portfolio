@@ -26,7 +26,7 @@
 }
 
 /* lmao */
-html, body, div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote,
+html, body, div, span, object, iframe, h1, h1, h2, h3, h5, h6, p, blockquote,
 pre, a, abbr, acronym, address, code, del, dfn, em, img, q, dl, dt, dd, ol, ul,
 li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th,
 td {
@@ -77,7 +77,7 @@ td {
      border: 0;
      background-color: var(--hr-color);
 }
- hr + h2 {
+ hr + h1 {
      display: inline-block;
      position: relative;
      left: 50%;
@@ -94,14 +94,14 @@ td {
      text-transform: uppercase;
      background-color: black;
 }
- hr + h2::first-letter {
+ hr + h1::first-letter {
      margin-left: var(--letter-spacing);
 }
- hr + h2 {
+ hr + h1 {
      border-width: 1px 0;
      position: relative;
 }
- hr + h2::before, hr + h2::after {
+ hr + h1::before, hr + h1::after {
      display: block;
      position: absolute;
      top: 0;
@@ -110,10 +110,10 @@ td {
      background: var(--hr-color);
      content: '';
 }
- hr + h2::before {
+ hr + h1::before {
      left: 0;
 }
- hr + h2::after {
+ hr + h1::after {
      right: 0;
 }
  nav ul li a2:hover {
@@ -308,7 +308,7 @@ td {
      hr{
          margin: 20px 0 -15px;
     }
-     hr + h2 {
+     hr + h1 {
          font-size: 1.4rem;
     }
     /* Navigation row */
@@ -442,18 +442,18 @@ td {
      padding-bottom: 10px;
 }
 /* Headings Hierarchy */
- .margin h2 {
+ .margin h1 {
      font-size: 2.2rem;
      color: var(--color-fairypink);
      letter-spacing: 0.05em;
      font-weight: 500;
 }
- .margin h3 {
+ .margin h2 {
      font-size: 1.8rem;
      margin-top: 1.5px;
      color: var(--color-purple-gradient);
 }
- .margin h4 {
+ .margin h3 {
      font-size: 1.4rem;
      color: var(--color-blue-gradient);
      margin-top: 1.5rem;
@@ -492,6 +492,15 @@ td {
      position: absolute;
      left: -1.2rem;
 }
+/* Inactive links */
+.inactive {
+  pointer-events: none;
+  opacity: 0.5;
+  cursor: not-allowed;
+  text-decoration: none;
+  background: none;
+  border: none;
+}
 /* Code Blocks */
  .margin pre {
      background-color: var(--color-deep-blue-gradient);
@@ -523,14 +532,14 @@ td {
          margin-left: 0;
          padding: 1rem;
     }
-     .margin h2 {
+     .margin h1 {
          font-size: 1.8rem;
     }
-     .margin h3 {
+     .margin h2 {
          font-size: 1.5rem;
          margin-bottom: 0rem;
     }
-     .margin h4 {
+     .margin h3 {
          font-size: 1.3rem;
     }
      .margin p {
@@ -584,11 +593,23 @@ td {
      display: flex;
      align-items: center;
      gap: 0.5rem;
-     height: 1px;
+}
+ .back-button {
+     color: var(--link-color);
+     font-size: inherit;
+     text-decoration: none;
+     transition: transform 0.1s ease;
+}
+ .back-button:active {
+     transform: scale(0.88);
 }
  .socials-button {
      color: var(--link-color);
      font-size: inherit;
+     transition: transform 0.1s ease;
+}
+ .socials-button:active {
+     transform: scale(0.88);
 }
  .chevron {
      transition: transform 0.2s;
